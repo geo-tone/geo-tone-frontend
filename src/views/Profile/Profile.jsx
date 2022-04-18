@@ -1,8 +1,13 @@
 import React from 'react';
+import {
+  findProjectsByUserId,
+  deleteProjectById,
+} from '../../services/project';
 import { useParams } from 'react-router-dom';
 
 export default function Profile() {
-  // const { username } = useParams();
+  const { username } = useParams();
+  console.log('username', username);
 
   // BACKEND CONNECTION
 
@@ -15,5 +20,5 @@ export default function Profile() {
   // use username to get user_id
   // or put user_id in params
 
-  return <div>Profile</div>;
+  return <div>{username}</div>;
 }

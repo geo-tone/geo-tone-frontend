@@ -8,9 +8,10 @@ export default function Header() {
       <NavLink to="/">GeoTone</NavLink>
       <NavLink to="/register">Register</NavLink>
       <NavLink to="/signin">Sign In</NavLink>
-      {/* // pass user into path as template literals to access the logged in users
+      {/* // TODO: pass user into path as template literals to access the logged in users
       //profile. */}
       <NavLink to="/user/space-lady">Profile</NavLink>
+      {/* TODO: remove hard-coded project number here */}
       <NavLink to="/project/1">Project</NavLink>
     </header>
   );
