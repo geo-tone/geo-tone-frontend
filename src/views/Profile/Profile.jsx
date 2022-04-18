@@ -1,13 +1,20 @@
-import React from 'react';
+import { useEffect } from 'react';
 import {
   findProjectsByUserId,
   deleteProjectById,
 } from '../../services/project';
+import { findProfileByUserId } from '../../services/profile';
 import { useParams } from 'react-router-dom';
 
 export default function Profile() {
   const { username } = useParams();
   console.log('username', username);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await findProfileByUserId;
+    };
+  });
 
   // BACKEND CONNECTION
 

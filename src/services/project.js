@@ -5,6 +5,7 @@ const deleteProjectById = async (projectId) => {
       {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
+        // add cookie stuff here
       }
     );
     const parsedData = await resp.json();
@@ -54,6 +55,7 @@ const handleSaveProject = async ({ projectId, project }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(project),
+        // add cookie stuff here
       });
       const parsedData = await resp.json();
 
@@ -69,6 +71,7 @@ const handleSaveProject = async ({ projectId, project }) => {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(project),
+          // add cookie stuff here
         }
       );
       const parsedData = await resp.json();
