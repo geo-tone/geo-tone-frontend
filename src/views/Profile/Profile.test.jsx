@@ -9,6 +9,8 @@ import Profile from './Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
 import EditProfile from '../EditProfile/EditProfile';
 
+const user = userEvent.setup();
+
 const server = setupServer(
   rest.get(`${process.env.API_URL}/api/v1/users/me`, (req, res, ctx) => {
     return res(ctx.json(mockUser));
@@ -51,8 +53,6 @@ describe('Profile', () => {
   });
 
   it('should render an empty profile page and allow the user to create then edit their profile', async () => {
-    const user = userEvent.setup();
-
     render(
       <MemoryRouter
         initialEntries={[
@@ -92,7 +92,6 @@ describe('Profile', () => {
 
     await user.type(bioInput, 'mock bio');
     await user.type(avatarInput, 'mock image url');
-    screen.debug();
 
     await user.click(redirectButton);
 
@@ -153,5 +152,28 @@ describe('Profile', () => {
 
     await screen.findByRole('heading', { name: /mockuser/i });
     await screen.findByText('edited bio');
+  });
+
+  it('should allow a user to delete their account, then redirect to home page', async () => {
+    render(
+      <MemoryRouter initialEntries={[`/user/${mockUser.username}`]}>
+        <UserProvider>
+          <Routes>
+            <Route path="user/:username" element={<Profile />} />
+          </Routes>
+        </UserProvider>
+      </MemoryRouter>
+    );
+
+    server.use(
+      rest.get(
+        `${process.env.API_URL}/api/v1/profiles/:username`,
+        (req, res, ctx) => {
+          return res(ctx.json(mockProfile));
+        }
+      )
+    );
+
+    await screen.findByRole('heading', { name: /mockuser/i });
   });
 });
