@@ -29,9 +29,7 @@ export default function Project({ isLoggedIn = false }) {
     handleSaveProject({ projectId, project });
     navigate(`/user/${currentUser.username}`, { push: true });
   };
-
   if (isLoading) return <div> loading ... </div>;
-  console.log('project', project);
   return (
     <>
       <div>
