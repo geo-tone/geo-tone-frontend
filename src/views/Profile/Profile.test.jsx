@@ -8,6 +8,7 @@ import { UserProvider } from '../../context/UserContext';
 import Profile from './Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
 import EditProfile from '../EditProfile/EditProfile';
+import Home from '../Home/Home';
 
 const user = userEvent.setup();
 
@@ -40,8 +41,17 @@ const server = setupServer(
       req.body = { bio: 'edited', avatar: 'edited' };
       return res(ctx.json({ ...mockProfile, ...req.body }));
     }
+  ),
+
+  rest.delete(
+    `${process.env.API_URL}/api/v1/users/:user_id`,
+    (req, res, ctx) => {
+      return res(ctx.json({ message: 'Successfully deleted user.' }));
+    }
   )
 );
+
+window.confirm = jest.fn(() => true);
 
 describe('Profile', () => {
   beforeAll(() => {
@@ -108,9 +118,6 @@ describe('Profile', () => {
       )
     );
 
-    await screen.findByRole('heading', { name: /mockuser/i });
-    await screen.findByAltText(/user avatar/i);
-
     redirectButton = await screen.findByRole('button', {
       name: /edit profile/i,
     });
@@ -131,8 +138,6 @@ describe('Profile', () => {
     await user.type(bioInput, 'edited bio');
     await user.type(avatarInput, 'edited image url');
 
-    expect(bioInput).toHaveValue('edited bio');
-
     await user.click(redirectButton);
 
     server.use(
@@ -150,8 +155,11 @@ describe('Profile', () => {
       )
     );
 
+    // Expected Profile page after edits
     await screen.findByRole('heading', { name: /mockuser/i });
     await screen.findByText('edited bio');
+    await screen.findByAltText('user avatar');
+    expect(await screen.findAllByRole('button')).toHaveLength(3);
   });
 
   it('should allow a user to delete their account, then redirect to home page', async () => {
@@ -160,6 +168,7 @@ describe('Profile', () => {
         <UserProvider>
           <Routes>
             <Route path="user/:username" element={<Profile />} />
+            <Route path="/" element={<Home />} />
           </Routes>
         </UserProvider>
       </MemoryRouter>
@@ -174,6 +183,16 @@ describe('Profile', () => {
       )
     );
 
-    await screen.findByRole('heading', { name: /mockuser/i });
+    const deleteButton = await screen.findByRole('button', {
+      name: /delete account/i,
+    });
+
+    await user.click(deleteButton);
+
+    // HOME - Redirect to /
+    //
+    // The user should be logged out and sent to the home page
+    await screen.findByRole('heading', { name: /geo tone/i });
+    expect(deleteButton).not.toBeInTheDocument();
   });
 });
