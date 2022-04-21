@@ -7,6 +7,11 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { findProjectById } from '../services/project';
+import {
+  keyCMajorPentatonic2,
+  keyCMajorPentatonic3,
+  keyCMajorPentatonic4,
+} from '../utils/toneUtils';
 
 const initialState = {
   userId: 1, // TODO: replace with userId from UserContext

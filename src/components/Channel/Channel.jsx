@@ -11,24 +11,34 @@ import {
 import classNames from 'classnames';
 import styles from './Channel.css';
 import Row from './Row';
-import Dropdown from './Dropdown';
 import Controls from './Controls';
-import { BitCrusher } from 'tone';
 
 export default function Channel({ channel }) {
   const [instrument, setInstrument] = useState(channel.type);
-  const [oscillator, setOscillator] = useState(channel.osc);
+  const [oscillator, setOscillator] = useState(channel.osc); // TODO: add buttons for monoSynth?
   const [volume, setVolume] = useState(channel.volume);
-  const [keyArray, setKeyArray] = useState(keyCMajorPentatonic4);
   const [notes, setNotes] = useState(channel.steps);
   const [fx, setFx] = useState({
     reverb: channel.reverb,
+    bitcrusher: 0,
+    delay: 0,
   });
 
-  const [fx1, setFx1] = useState(0);
-  const [fx2, setFx2] = useState(0);
-  const [attack, setAttack] = useState(0.1);
-  const [release, setRelease] = useState(0.1);
+  const [bitcrusher, setBitcrusher] = useState(0);
+  const [delay, setDelay] = useState(0);
+
+  const [keyArray, setKeyArray] = useState(() => {
+    switch (instrument) {
+      case 'duoSynth':
+        return keyCMajorPentatonic4;
+      case 'monoSynth':
+        return keyCMajorPentatonic3;
+      case 'membraneSynth':
+        return keyCMajorPentatonic2;
+      default:
+        return keyCMajorPentatonic4;
+    }
+  });
 
   const { handleUpdateChannel } = useProject();
 
@@ -94,41 +104,28 @@ export default function Channel({ channel }) {
       >
         <Instrument
           type={instrument}
-          envelope={{ attack, release }}
-          oscillator={{ type: oscillator }}
+          oscillator={{ type: 'triangle' }}
+          envelope={{ attack: 0.1, release: 0.1 }}
         />
-        <Effect type="bitCrusher" wet={fx1} />
-        <Effect type="feedbackDelay" wet={fx2} />
+        <Effect type="bitCrusher" wet={bitcrusher} />
+        <Effect type="feedbackDelay" wet={delay} />
         <Effect type="freeverb" wet={fx.reverb} />
       </Track>
       {/* Display components below*/}
       <Row {...{ notes, handleNoteChange }} />
-      <Dropdown {...{ instrument, setInstrument, oscillator, setOscillator }} />
-      <Controls {...{ channelId, volume, setVolume, fx, setFx }} />
-      <div>
-        <label>
-          fx1
-          <input
-            type="range"
-            min="0.0"
-            max="1"
-            step="0.05"
-            onChange={(e) => setFx1(e.target.value)}
-            value={fx1}
-          />
-        </label>
-        <label>
-          fx2
-          <input
-            type="range"
-            min="0.0"
-            max="1"
-            step="0.05"
-            onChange={(e) => setFx2(e.target.value)}
-            value={fx2}
-          />
-        </label>
-      </div>
+      <Controls
+        {...{
+          channelId,
+          volume,
+          setVolume,
+          fx,
+          setFx,
+          bitcrusher,
+          setBitcrusher,
+          delay,
+          setDelay,
+        }}
+      />
     </div>
   );
 }
