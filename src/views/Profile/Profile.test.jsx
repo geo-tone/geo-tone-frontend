@@ -48,9 +48,7 @@ describe('Profile', () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter
-        initialEntries={['/user/mockuser', '/user/new', '/user/mockuser']}
-      >
+      <MemoryRouter initialEntries={['/user/new', '/user/mockuser']}>
         <UserProvider>
           <Routes>
             <Route path="user/:username" element={<Profile />} />
@@ -61,14 +59,14 @@ describe('Profile', () => {
     );
 
     const createProfileButton = await screen.findByRole('button', {
-      name: /create profile/i,
+      name: /click here/i,
     });
 
     await user.click(createProfileButton);
 
+    // If navigated to /user/new, should display:
     await screen.findByRole('textbox', { name: /bio/i });
     await screen.findByRole('textbox', { name: /avatar/i });
-
     await screen.findByRole('button', {
       name: /create/i,
     });
