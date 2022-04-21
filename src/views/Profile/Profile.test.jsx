@@ -189,6 +189,8 @@ describe('Profile', () => {
 
     await user.click(deleteButton);
 
+    expect(window.confirm).toHaveBeenCalled();
+
     // HOME - Redirect to /
     //
     // The user should be logged out and sent to the home page
