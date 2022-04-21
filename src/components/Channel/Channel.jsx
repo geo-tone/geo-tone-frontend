@@ -40,7 +40,7 @@ export default function Channel({ channel }) {
     }
   });
 
-  const { handleUpdateChannel } = useProject();
+  const { handleDeleteChannel, handleUpdateChannel } = useProject();
 
   const channelId = channel.id;
 
@@ -55,6 +55,10 @@ export default function Channel({ channel }) {
     };
     handleUpdateChannel(channelObj);
   }, [instrument, oscillator, volume, notes, fx]);
+
+  const deleteChannel = () => {
+    handleDeleteChannel(channelId);
+  };
 
   const highlightCurrentStep = (stepIndex) => {
     const sequence = document
@@ -126,6 +130,7 @@ export default function Channel({ channel }) {
           setDelay,
         }}
       />
+      <button onClick={deleteChannel}>Delete Channel</button>
     </div>
   );
 }

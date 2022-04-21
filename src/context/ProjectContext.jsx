@@ -38,6 +38,8 @@ function projectReducer(project, action) {
       return { ...project, bpm: Number(action.value) };
     case 'add new channel':
       return { ...project, channels: [...project.channels, action.value] };
+    case 'delete channel':
+      return { ...project, channels: action.value };
     case 'update channels':
       return { ...project, channels: action.value };
     case 'update project title':
@@ -109,6 +111,16 @@ const ProjectProvider = ({ children }) => {
     setAddingChannel(false);
   };
 
+  const handleDeleteChannel = (channelId) => {
+    const newChannelArray = channelArray.filter((item) => {
+      if (item.id !== channelId) {
+        return item;
+      }
+    });
+    setChannelArray(newChannelArray);
+    dispatch({ type: 'delete channel', value: newChannelArray });
+  };
+
   // updates channel array
   const handleUpdateChannel = (channel) => {
     const newChannelArray = channelArray.map((item) => {
@@ -131,8 +143,9 @@ const ProjectProvider = ({ children }) => {
     project: { isLoading, addingChannel, setAddingChannel, project },
     handleProjectVolume,
     handleSongBPM,
-    handleUpdateChannel,
     handleAddChannel,
+    handleDeleteChannel,
+    handleUpdateChannel,
     handleTitleChange,
   };
 
