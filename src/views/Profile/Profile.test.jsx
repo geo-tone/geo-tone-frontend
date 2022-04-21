@@ -12,9 +12,15 @@ const mockUser = {
   username: 'mockuser',
 };
 
+const mockProfile = {
+  ...mockUser,
+  bio: 'mock bio',
+  avatar: 'mock url',
+};
+
 const server = setupServer(
   rest.get(`${process.env.API_URL}/api/v1/users/me`, (req, res, ctx) => {
-    return res(ctx.json({ username: 'mockuser', userId: '1' }));
+    return res(ctx.json(mockUser));
   }),
 
   rest.get(
@@ -22,7 +28,11 @@ const server = setupServer(
     (req, res, ctx) => {
       return res(ctx.json({ message: 'this user has no profile' }));
     }
-  )
+  ),
+
+  rest.post(`${process.env.API_URL}/api/v1/profiles`, (req, res, ctx) => {
+    return res(ctx.json(mockProfile));
+  })
 );
 
 describe('Profile', () => {
@@ -34,9 +44,13 @@ describe('Profile', () => {
     server.close();
   });
 
-  it('should be a test', async () => {
+  it('should render an empty profile page and route to create profile on button click', async () => {
+    const user = userEvent.setup();
+
     render(
-      <MemoryRouter initialEntries={['/user/new', '/user/mockuser']}>
+      <MemoryRouter
+        initialEntries={['/user/mockuser', '/user/new', '/user/mockuser']}
+      >
         <UserProvider>
           <Routes>
             <Route path="user/:username" element={<Profile />} />
@@ -46,9 +60,17 @@ describe('Profile', () => {
       </MemoryRouter>
     );
 
-    const createProfileButton = await screen.findByRole(
-      'button',
-      /create profile/i
-    );
+    const createProfileButton = await screen.findByRole('button', {
+      name: /create profile/i,
+    });
+
+    await user.click(createProfileButton);
+
+    await screen.findByRole('textbox', { name: /bio/i });
+    await screen.findByRole('textbox', { name: /avatar/i });
+
+    await screen.findByRole('button', {
+      name: /create/i,
+    });
   });
 });
