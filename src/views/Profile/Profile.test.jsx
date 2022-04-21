@@ -7,6 +7,7 @@ import { mockUser, mockProfile } from '../../mocks/resolvers';
 import { UserProvider } from '../../context/UserContext';
 import Profile from './Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
+import EditProfile from '../EditProfile/EditProfile';
 
 const server = setupServer(
   rest.get(`${process.env.API_URL}/api/v1/users/me`, (req, res, ctx) => {
@@ -29,6 +30,14 @@ const server = setupServer(
     (req, res, ctx) => {
       return res(ctx.json({ message: 'this user has no projects' }));
     }
+  ),
+
+  rest.patch(
+    `${process.env.API_URL}/api/v1/profiles/:username`,
+    (req, res, ctx) => {
+      req.body = { bio: 'edited', avatar: 'edited' };
+      return res(ctx.json({ ...mockProfile, ...req.body }));
+    }
   )
 );
 
@@ -41,41 +50,56 @@ describe('Profile', () => {
     server.close();
   });
 
-  it('should render an empty profile page and route to create profile on button click', async () => {
+  it('should render an empty profile page and allow the user to create then edit their profile', async () => {
     const user = userEvent.setup();
 
     render(
-      <MemoryRouter initialEntries={['/user/new', '/user/mockuser']}>
+      <MemoryRouter
+        initialEntries={[
+          `/user/${mockUser.username}/edit`,
+          '/user/new',
+          `/user/${mockUser.username}`,
+        ]}
+      >
         <UserProvider>
           <Routes>
-            <Route path="user/:username" element={<Profile />} />
-            <Route path="user/new" element={<CreateProfile />} />
+            <Route path="user">
+              <Route path=":username" element={<Profile />} />
+              <Route path="new" element={<CreateProfile />} />
+              <Route path=":username/edit" element={<EditProfile />} />
+            </Route>
           </Routes>
         </UserProvider>
       </MemoryRouter>
     );
 
-    const createProfileButton = await screen.findByRole('button', {
+    let redirectButton = await screen.findByRole('button', {
       name: /click here/i,
     });
 
-    await user.click(createProfileButton);
+    await user.click(redirectButton);
 
-    // REDIRECT:
-    //    If navigated to /user/new, should display the following:
-    const bioInput = await screen.findByRole('textbox', { name: /bio/i });
-    const avatarInput = await screen.findByRole('textbox', { name: /avatar/i });
-    const saveProfileButton = await screen.findByRole('button', {
+    // CREATE PROFILE - Redirect to /user/new
+    //
+    // If navigated to /user/new, should display the following:
+
+    let bioInput = await screen.findByRole('textbox', { name: /bio/i });
+    let avatarInput = await screen.findByRole('textbox', { name: /avatar/i });
+
+    redirectButton = await screen.findByRole('button', {
       name: /create/i,
     });
 
     await user.type(bioInput, 'mock bio');
     await user.type(avatarInput, 'mock image url');
+    screen.debug();
 
-    await user.click(saveProfileButton);
+    await user.click(redirectButton);
 
-    // REDIRECT:
-    //    On redirect to user profile, response carries new user profile data
+    // PROFILE - Redirect to /user/:username
+    //
+    // On redirect to user profile, response carries new user profile data
+
     server.use(
       rest.get(
         `${process.env.API_URL}/api/v1/profiles/:username`,
@@ -88,6 +112,46 @@ describe('Profile', () => {
     await screen.findByRole('heading', { name: /mockuser/i });
     await screen.findByAltText(/user avatar/i);
 
-    screen.debug();
+    redirectButton = await screen.findByRole('button', {
+      name: /edit profile/i,
+    });
+
+    await user.click(redirectButton);
+
+    // EDIT PROFILE - Redirect to /user/:username/edit
+    //
+    // On redirect, should allow the user to edit bio and avatar
+
+    bioInput = await screen.findByRole('textbox', { name: /bio/i });
+    avatarInput = await screen.findByRole('textbox', { name: /avatar/i });
+
+    redirectButton = await screen.findByRole('button', {
+      name: /edit/i,
+    });
+
+    await user.type(bioInput, 'edited bio');
+    await user.type(avatarInput, 'edited image url');
+
+    expect(bioInput).toHaveValue('edited bio');
+
+    await user.click(redirectButton);
+
+    server.use(
+      rest.get(
+        `${process.env.API_URL}/api/v1/profiles/:username`,
+        (req, res, ctx) => {
+          return res(
+            ctx.json({
+              ...mockProfile,
+              bio: 'edited bio',
+              avatar: 'edited image url',
+            })
+          );
+        }
+      )
+    );
+
+    await screen.findByRole('heading', { name: /mockuser/i });
+    await screen.findByText('edited bio');
   });
 });
