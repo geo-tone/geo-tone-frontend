@@ -13,18 +13,27 @@ export default function Auth({ isRegistering = false }) {
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useUser();
 
+  const containsIllegalCharacters = (str) => {
+    return /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(str);
+  };
+
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (isRegistering) {
-      const user = await registerUser(formState.username, formState.password);
-      if (user?.username) {
-        setFormMessage('You have successfully registered! Logging you in...');
-        await signInUser(formState.username, formState.password);
-        setCurrentUser({ username: user.username, userId: user.userId });
-        // setFormMessage(message);
-        setTimeout(() => {
-          navigate(`/user/${formState.username}`, { push: true });
-        }, 2000);
+      if (containsIllegalCharacters(formState.username)) {
+        setFormMessage('username must contain only letters and numbers');
+      } else {
+        const user = await registerUser(formState.username, formState.password);
+        if (user.message === 'username already exists') {
+          setFormMessage(user.message);
+        } else if (user?.username) {
+          setFormMessage('You have successfully registered! Logging you in...');
+          await signInUser(formState.username, formState.password);
+          setCurrentUser({ username: user.username, userId: user.userId });
+          setTimeout(() => {
+            navigate(`/user/${formState.username}`, { push: true });
+          }, 2000);
+        }
       }
     } else {
       const { message } = await signInUser(
@@ -42,7 +51,7 @@ export default function Auth({ isRegistering = false }) {
 
   return (
     <form className={styles.authForm} onSubmit={handleAuthSubmit}>
-      <h2>{isRegistering ? 'Register' : 'Log In'}</h2>
+      <h2>{isRegistering ? 'rEGIsTer' : 'Log In'}</h2>
       <label>
         Username:
         <input
@@ -50,20 +59,22 @@ export default function Auth({ isRegistering = false }) {
           name="username"
           value={formState.username}
           onChange={(e) => handleFormChange(e)}
+          required
         />
       </label>
       {/* maybe refactor to a file upload system? */}
       <label>
         Password:
         <input
-          type="text"
+          type="password"
           name="password"
           value={formState.password}
           onChange={(e) => handleFormChange(e)}
+          required
         />
       </label>
       <button>{isRegistering ? 'Register' : 'Log In'}</button>
-      <div>{formMessage}</div>
+      <div className={styles.alertMessage}>{formMessage}</div>
     </form>
   );
 }
