@@ -1,23 +1,34 @@
 import { useState, useEffect } from 'react';
 import { Track, Instrument, Effect } from 'reactronica';
 import { useProject } from '../../context/ProjectContext';
-import { keyCMajorPentatonic, setPitchColor } from '../../utils/toneUtils';
+import {
+  keyCMajorPentatonic2,
+  keyCMajorPentatonic3,
+  keyCMajorPentatonic4,
+  setPitchColor,
+} from '../../utils/toneUtils';
 
 import classNames from 'classnames';
 import styles from './Channel.css';
 import Row from './Row';
 import Dropdown from './Dropdown';
 import Controls from './Controls';
+import { BitCrusher } from 'tone';
 
 export default function Channel({ channel }) {
   const [instrument, setInstrument] = useState(channel.type);
   const [oscillator, setOscillator] = useState(channel.osc);
   const [volume, setVolume] = useState(channel.volume);
-  const [keyArray, setKeyArray] = useState(keyCMajorPentatonic);
+  const [keyArray, setKeyArray] = useState(keyCMajorPentatonic4);
   const [notes, setNotes] = useState(channel.steps);
   const [fx, setFx] = useState({
     reverb: channel.reverb,
   });
+
+  const [fx1, setFx1] = useState(0);
+  const [fx2, setFx2] = useState(0);
+  const [attack, setAttack] = useState(0.1);
+  const [release, setRelease] = useState(0.1);
 
   const { handleUpdateChannel } = useProject();
 
@@ -83,16 +94,41 @@ export default function Channel({ channel }) {
       >
         <Instrument
           type={instrument}
-          envelope={{ attack: 0.2, release: 0.5 }}
+          envelope={{ attack, release }}
           oscillator={{ type: oscillator }}
         />
+        <Effect type="bitCrusher" wet={fx1} />
+        <Effect type="feedbackDelay" wet={fx2} />
         <Effect type="freeverb" wet={fx.reverb} />
       </Track>
-
       {/* Display components below*/}
       <Row {...{ notes, handleNoteChange }} />
       <Dropdown {...{ instrument, setInstrument, oscillator, setOscillator }} />
       <Controls {...{ channelId, volume, setVolume, fx, setFx }} />
+      <div>
+        <label>
+          fx1
+          <input
+            type="range"
+            min="0.0"
+            max="1"
+            step="0.05"
+            onChange={(e) => setFx1(e.target.value)}
+            value={fx1}
+          />
+        </label>
+        <label>
+          fx2
+          <input
+            type="range"
+            min="0.0"
+            max="1"
+            step="0.05"
+            onChange={(e) => setFx2(e.target.value)}
+            value={fx2}
+          />
+        </label>
+      </div>
     </div>
   );
 }

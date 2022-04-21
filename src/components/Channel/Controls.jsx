@@ -23,7 +23,7 @@ export default function Controls({ channelId, volume, setVolume, fx, setFx }) {
           name={`channel-${channelId}-reverb`}
           type="range"
           min="0"
-          max="1"
+          max="0.75"
           step="0.05"
           onChange={(e) => setFx({ ...fx, reverb: e.target.value })}
           value={fx.reverb}
