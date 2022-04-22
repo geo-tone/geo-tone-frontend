@@ -3,10 +3,9 @@ import { useProject } from '../../context/ProjectContext';
 import { playVariants as play } from '../../utils/framerUtils';
 import styles from './GlobalControls.css';
 
-export default function GlobalControls({ start, setStart }) {
+export default function GlobalControls({ start, setStart, volume, setVolume }) {
   const {
     project: { project },
-    handleProjectVolume,
     handleSongBPM,
   } = useProject();
 
@@ -33,8 +32,8 @@ export default function GlobalControls({ start, setStart }) {
           min="-48"
           max="0"
           step="1"
-          value={project.volume}
-          onChange={(e) => handleProjectVolume(e)}
+          value={volume}
+          onChange={(e) => setVolume(Number(e.target.value))}
         />
       </label>
 
