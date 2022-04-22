@@ -23,8 +23,6 @@
   filter: drop-shadow(0 0.2rem 0.25rem var(--pink));
 }
 
-/* === */
-
 .cont {
   height: 100%;
   width: 100vw;
@@ -64,7 +62,7 @@
   margin: 40px;
 }
 
-.userProfile h2 {
+.userProfile h1 {
   font-family: 'Major Mono Display', monospace;
 }
 
@@ -88,15 +86,12 @@
 
 .editProfButton button:hover {
   cursor: pointer;
-  /* border-radius: 5px; */
   filter: invert(100%);
 }
 
 .cont button {
   cursor: pointer;
   padding: 5px;
-  /* margin: 3px; */
-  /* background-color: var(--white-ish); */
 }
 
 .cont button:hover {
@@ -106,7 +101,7 @@
   animation-iteration-count: infinite;
 }
 
-.cont h3 {
+.cont h2 {
   align-self: center;
   font-size: 2em;
   letter-spacing: 3px;
@@ -160,7 +155,6 @@
   align-items: center;
   justify-content: space-around;
   gap: 10px;
-  /* background-color: var(--purple); */
   border-radius: 10px;
   overflow: auto;
 }
