@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;800&family=Major+Mono+Display&display=swap');
+
+/* font-family: 'Barlow', sans-serif; */
+/* font-family: 'Major Mono Display', monospace; */
+
+:root {
+  --pink: #fe5ca7ff;
+  --purple: #6e60b6ff;
+  --aqua: #33bfcaff;
+  --lav: #c47fdbff;
+  --pennyroyal: #8080ffff;
+  --white-ish: rgb(240, 240, 240);
+  --black-ish: rgb(10, 10, 10);
+}
+
+body {
+  margin: 0px;
+  background-color: var(--black-ish);
+  color: var(--white-ish);
+  font-family: 'Barlow', sans-serif;
+}
+
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+footer img {
+  width: 60px;
+  padding: 5px 20px;
+}
+
+header img {
+  width: 60px;
+}
+
+header img:hover {
+  cursor: pointer;
+  border-radius: 100%;
+  background-color: var(--aqua);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: var(--purple);
+  width: 100vw;
+  /* font-size: 25px; */
+}
+
+header a,
+header button,
+footer a {
+  text-decoration: none;
+  padding: 5px;
+  font-weight: 400;
+  font-size: 1.25rem;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: #49205c;
+  font-family: 'Barlow', sans-serif;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: var(--purple);
+  width: 100vw;
+  position: fixed;
+  bottom: 0%;
+}
+
+header a:hover,
+header button:hover,
+footer a:hover {
+  color: var(--aqua);
+  border-bottom: solid var(--white-ish) 1px;
+}
+
+.loggedIn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loggedIn p {
+  color: #5448a7;
+  font-weight: 400;
+}
+
+.loggedIn:hover p {
+  color: var(--black-ish);
+}
