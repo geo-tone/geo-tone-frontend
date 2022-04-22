@@ -94,13 +94,13 @@
 }
 
 .dragControls {
-  background-color: blanchedalmond;
+  border: var(--white-ish) solid 5px;
   height: 100px;
   width: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20%;
+  border-radius: 50%;
 }
 .dragKnob {
   background-color: black;

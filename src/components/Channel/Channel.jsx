@@ -7,7 +7,7 @@ import {
   keyCMajorPentatonic4,
   setPitchColor,
 } from '../../utils/toneUtils';
-import { motion, useDragControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import classNames from 'classnames';
 import styles from './Channel.css';
 import Row from './Row';
@@ -135,20 +135,6 @@ export default function Channel({ channel }) {
         <Effect type="freeverb" wet={fx.reverb} />
       </Track>
       {/* Display components below*/}
-      <Row {...{ notes, handleNoteChange }} />
-      <Controls
-        {...{
-          channelId,
-          volume,
-          setVolume,
-          fx,
-          setFx,
-          bitcrusher,
-          setBitcrusher,
-          delay,
-          setDelay,
-        }}
-      />
       <div>
         <div className={styles.dragControls}>
           <motion.input
@@ -170,6 +156,20 @@ export default function Channel({ channel }) {
           />
         </div>
       </div>
+      <Row {...{ notes, handleNoteChange }} />
+      <Controls
+        {...{
+          channelId,
+          volume,
+          setVolume,
+          fx,
+          setFx,
+          bitcrusher,
+          setBitcrusher,
+          delay,
+          setDelay,
+        }}
+      />
       <button onClick={deleteChannel}>Delete Channel</button>
     </div>
   );
