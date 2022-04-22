@@ -117,7 +117,6 @@ export default function Channel({ channel }) {
     }
     setBitcrusher(x);
     setDelay(y);
-    console.log('x, y', x, y);
   };
 
   return (

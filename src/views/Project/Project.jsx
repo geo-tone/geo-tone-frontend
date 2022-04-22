@@ -83,13 +83,7 @@ export default function Project({ isLoggedIn = false }) {
           {addingChannel ? (
             <Dropdown {...{ handleAddChannel }} />
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setAddingChannel(true)}
-            >
-              +
-            </motion.button>
+            <button onClick={() => setAddingChannel(true)}>+</button>
           )}
         </div>
       </div>
