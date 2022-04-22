@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import styles from './Home.css';
 import shapes from '../../assets/shapes.png';
 import { Link } from 'react-router-dom';
-import { getAggregate } from '../../services/aggregate';
+import { getTotalUsers, getTotalProjects } from '../../services/aggregate';
 
 export default function Home() {
   const [totalProjects, setTotalProjects] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getAggregate();
-      setTotalProjects(data);
+      const projectAggregate = await getTotalProjects();
+      setTotalProjects(projectAggregate);
+      const userAggregate = await getTotalUsers();
+      setTotalUsers(userAggregate);
     };
     fetchData();
   }, []);
@@ -18,7 +21,6 @@ export default function Home() {
   return (
     <>
       <div className={styles.homeContainer}>
-        <p>Join the creators who have created {totalProjects} projects!</p>
         <div className={styles.homeBanner}>
           <img src={shapes} alt="Colorful squares" />
           <h1>Welcome to GEo TONe.</h1>
@@ -31,6 +33,10 @@ export default function Home() {
             Sign up
           </Link>{' '}
           to play.
+        </p>
+        <p>
+          Join the {totalUsers} other synth wizards who have created{' '}
+          {totalProjects} projects!
         </p>
       </div>
     </>
