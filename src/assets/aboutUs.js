@@ -27,7 +27,7 @@ export const aboutUs = [
     name: 'Minoka',
     linkedIn: 'https://www.linkedin.com/in/minoka-kakizaki/',
     gitHub: 'https://github.com/kakizaki55',
-    bio: 'Full Stack Software Engineer in Portland, OR.',
+    bio: 'Full Stack Software Engineer in Portland, OR. with a background in audio production and a passion for user-centric UX, who believes in inclusion, accessibility, and test-driven production.',
     photo: 'triangle',
     geoTone: './user/:username',
   },
