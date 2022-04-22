@@ -11,7 +11,7 @@ export const aboutUs = [
     name: 'Michelle Nygren',
     linkedIn: 'https://www.linkedin.com/in/michellenygren/',
     gitHub: 'https://github.com/michellerenehey',
-    bio: 'Full Stack Software Engineer in Portland, OR.',
+    bio: 'Michelle is a full-stack web developer in Portland, OR. She was voted most musically talented in high school, and is excited to finally make that come to life with Geo Tone. Sick beats, dude!',
     photo: 'diamond',
     geoTone: './user/:username',
   },
