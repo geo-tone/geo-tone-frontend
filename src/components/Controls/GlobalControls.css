@@ -1,0 +1,8 @@
+.playButton {
+  background-color: #33bfcaff;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  border: 2px solid #8080ffff;
+  color: black;
+}

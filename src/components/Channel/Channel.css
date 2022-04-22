@@ -92,3 +92,19 @@
 .controls label {
   display: block;
 }
+
+.dragControls {
+  background-color: blanchedalmond;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+}
+.dragKnob {
+  background-color: black;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
