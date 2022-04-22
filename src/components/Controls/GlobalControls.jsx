@@ -1,6 +1,7 @@
 import React from 'react';
 import { useProject } from '../../context/ProjectContext';
-import { motion } from 'framer-motion';
+import { motion, useCycle } from 'framer-motion';
+import { playVariants as play } from '../../utils/framerUtils';
 import styles from './GlobalControls.css';
 
 export default function GlobalControls({ start, setStart }) {
@@ -10,12 +11,19 @@ export default function GlobalControls({ start, setStart }) {
     handleSongBPM,
   } = useProject();
 
+  const [active, cycleActive] = useCycle('play', 'stop');
+
   return (
     <div id="global-controls">
       <motion.button
         className={styles.playButton}
         whileHover={{ scale: 1.1 }}
-        onClick={() => setStart(!start)}
+        onClick={() => {
+          cycleActive();
+          setStart(!start);
+        }}
+        animate={active}
+        variants={play}
       >
         {start ? 'stop' : 'play'}
       </motion.button>
