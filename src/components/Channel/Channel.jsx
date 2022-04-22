@@ -130,7 +130,7 @@ export default function Channel({ channel }) {
         <Effect type="freeverb" wet={fx.reverb} />
       </Track>
 
-      {/* Visual rendering components below*/}
+      {/* Render all visual components below*/}
 
       <div className={styles.dragContainer}>
         <div className={styles.dragControls}>
