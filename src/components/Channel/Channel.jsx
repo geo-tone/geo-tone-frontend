@@ -7,7 +7,6 @@ import {
   keyCMajorPentatonic4,
   setPitchColor,
 } from '../../utils/toneUtils';
-
 import classNames from 'classnames';
 import styles from './Channel.css';
 import Row from './Row';

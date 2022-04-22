@@ -35,7 +35,6 @@ export default function Project({ isLoggedIn = false }) {
   };
 
   if (isLoading) return <div> loading ... </div>;
-  console.log('project', project);
   return (
     <div className={styles.currentProject}>
       <div className={styles.fixedProject}>
