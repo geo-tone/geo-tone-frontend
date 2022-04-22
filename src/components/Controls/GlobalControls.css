@@ -6,14 +6,3 @@
   border: 2px solid #8080ffff;
   color: black;
 }
-#global-controls {
-  appearance: none;
-  margin: 0px;
-  padding: 0px;
-  border: 2px solid #8080ffff;
-  background: transparent;
-  color: transparent;
-  overflow: visible;
-  height: 2px;
-  border-radius: px;
-}
