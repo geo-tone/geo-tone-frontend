@@ -59,7 +59,12 @@ export default function Project() {
           {addingChannel ? (
             <Dropdown handleAddChannel={handleAddChannel} />
           ) : (
-            <button onClick={() => setAddingChannel(true)}>+</button>
+            <button
+              onClick={() => setAddingChannel(true)}
+              className={styles.addChannel}
+            >
+              +
+            </button>
           )}
         </div>
       </div>

@@ -12,7 +12,7 @@ export default function GlobalControls({ start, setStart, volume, setVolume }) {
   const [active, cycleActive] = useCycle('play', 'stop');
 
   return (
-    <div id="global-controls">
+    <div id="global-controls" className={styles.container}>
       <motion.button
         className={styles.playButton}
         whileHover={{ scale: 1.1 }}
@@ -25,7 +25,7 @@ export default function GlobalControls({ start, setStart, volume, setVolume }) {
       >
         {start ? 'stop' : 'play'}
       </motion.button>
-      <label>
+      <label className={styles.label}>
         Project Volume
         <input
           type="range"
@@ -37,7 +37,7 @@ export default function GlobalControls({ start, setStart, volume, setVolume }) {
         />
       </label>
 
-      <label>
+      <label className={styles.label}>
         BPM
         <input
           type="number"
@@ -46,6 +46,7 @@ export default function GlobalControls({ start, setStart, volume, setVolume }) {
           step="10"
           value={project.bpm}
           onChange={handleSongBPM}
+          className={styles.bpmCounter}
         />
       </label>
     </div>
