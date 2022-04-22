@@ -1,19 +1,6 @@
 import styles from './Channel.css';
-import { motion } from 'framer-motion';
 
-export default function Controls({
-  channelId,
-  volume,
-  setVolume,
-  fx,
-  setFx,
-  bitcrusher,
-  setBitcrusher,
-  delay,
-  setDelay,
-  setKeyArray,
-}) {
-  // controls for each channel
+export default function Controls({ channelId, volume, setVolume, fx, setFx }) {
   return (
     <div className={styles.controls}>
       <label>
@@ -41,33 +28,6 @@ export default function Controls({
           value={fx.reverb}
         />
       </label>
-
-      {/* <label>
-        Bit Crusher
-        <input
-          id={`channel-${channelId}-bitcrusher`}
-          name={`channel-${channelId}-bitcrusher`}
-          type="range"
-          min="0.0"
-          max="1"
-          step="0.05"
-          onChange={(e) => setBitcrusher(e.target.value)}
-          value={bitcrusher}
-        />
-      </label>
-      <label>
-        Delay
-        <input
-          id={`channel-${channelId}-delay`}
-          name={`channel-${channelId}-delay`}
-          type="range"
-          min="0.0"
-          max="1"
-          step="0.05"
-          onChange={(e) => setDelay(e.target.value)}
-          value={delay}
-        />
-      </label> */}
     </div>
   );
 }

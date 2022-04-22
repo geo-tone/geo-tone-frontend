@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Track, Instrument, Effect } from 'reactronica';
+import { motion } from 'framer-motion';
+import classNames from 'classnames';
 import { useProject } from '../../context/ProjectContext';
 import {
   keyCMajorPentatonic2,
@@ -7,26 +9,24 @@ import {
   keyCMajorPentatonic4,
   setPitchColor,
 } from '../../utils/toneUtils';
-import { motion } from 'framer-motion';
-import classNames from 'classnames';
-import styles from './Channel.css';
-import Row from './Row';
 import Controls from './Controls';
+import Row from './Row';
+import styles from './Channel.css';
 
 export default function Channel({ channel }) {
+  const channelId = channel.id;
+
+  const { handleDeleteChannel, handleUpdateChannel } = useProject();
+
   const [instrument, setInstrument] = useState(channel.type);
-  const [oscillator, setOscillator] = useState(channel.osc); // TODO: add buttons for monoSynth?
+  const [oscillator, setOscillator] = useState(channel.osc);
   const [volume, setVolume] = useState(channel.volume);
   const [notes, setNotes] = useState(channel.steps);
   const [fx, setFx] = useState({
     reverb: channel.reverb,
-    bitcrusher: 0,
-    delay: 0,
   });
-
   const [bitcrusher, setBitcrusher] = useState(0);
   const [delay, setDelay] = useState(0);
-
   const [keyArray, setKeyArray] = useState(() => {
     switch (instrument) {
       case 'duoSynth':
@@ -40,10 +40,6 @@ export default function Channel({ channel }) {
     }
   });
 
-  const { handleDeleteChannel, handleUpdateChannel } = useProject();
-
-  const channelId = channel.id;
-
   useEffect(() => {
     const channelObj = {
       id: channelId,
@@ -55,10 +51,6 @@ export default function Channel({ channel }) {
     };
     handleUpdateChannel(channelObj);
   }, [instrument, oscillator, volume, notes, fx]);
-
-  const deleteChannel = () => {
-    handleDeleteChannel(channelId);
-  };
 
   const highlightCurrentStep = (stepIndex) => {
     const sequence = document
@@ -81,7 +73,6 @@ export default function Channel({ channel }) {
     });
   };
 
-  //changes the note up the given key
   const handleNoteChange = (e) => {
     const indexOfStep = e.target.id.split('-')[1];
 
@@ -118,6 +109,10 @@ export default function Channel({ channel }) {
     setDelay(y);
   };
 
+  const deleteChannel = () => {
+    handleDeleteChannel(channelId);
+  };
+
   return (
     <div id={`channel-${channelId}`} className={styles.channel}>
       <Track
@@ -134,8 +129,10 @@ export default function Channel({ channel }) {
         <Effect type="feedbackDelay" wet={delay} />
         <Effect type="freeverb" wet={fx.reverb} />
       </Track>
-      {/* Display components below*/}
-      <div>
+
+      {/* Visual rendering components below*/}
+
+      <div className={styles.dragContainer}>
         <div className={styles.dragControls}>
           <motion.input
             className={styles.dragKnob}
@@ -156,19 +153,14 @@ export default function Channel({ channel }) {
           />
         </div>
       </div>
-      <Row {...{ notes, handleNoteChange }} />
+
+      <Row notes={notes} handleNoteChange={handleNoteChange} />
       <Controls
-        {...{
-          channelId,
-          volume,
-          setVolume,
-          fx,
-          setFx,
-          bitcrusher,
-          setBitcrusher,
-          delay,
-          setDelay,
-        }}
+        channelId={channelId}
+        volume={volume}
+        setVolume={setVolume}
+        fx={fx}
+        setFx={setFx}
       />
       <button onClick={deleteChannel}>Delete Channel</button>
     </div>

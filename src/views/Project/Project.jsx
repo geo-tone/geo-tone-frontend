@@ -55,7 +55,7 @@ export default function Project() {
           </Sequencer>
 
           {addingChannel ? (
-            <Dropdown {...{ handleAddChannel }} />
+            <Dropdown handleAddChannel={handleAddChannel} />
           ) : (
             <button onClick={() => setAddingChannel(true)}>+</button>
           )}

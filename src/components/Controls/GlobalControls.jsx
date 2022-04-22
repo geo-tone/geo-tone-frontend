@@ -1,6 +1,5 @@
-import React from 'react';
-import { useProject } from '../../context/ProjectContext';
 import { motion, useCycle } from 'framer-motion';
+import { useProject } from '../../context/ProjectContext';
 import { playVariants as play } from '../../utils/framerUtils';
 import styles from './GlobalControls.css';
 
@@ -33,6 +32,7 @@ export default function GlobalControls({ start, setStart }) {
           type="range"
           min="-48"
           max="0"
+          step="1"
           value={project.volume}
           onChange={(e) => handleProjectVolume(e)}
         />
