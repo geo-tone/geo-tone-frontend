@@ -79,6 +79,7 @@ export default function Profile() {
             <div className={styles.profileCont}>
               <User styles={styles} userProfile={userProfile} />
               <button
+                aria-label="edit profile"
                 className={styles.editProfButton}
                 onClick={handleEditProfile}
               >

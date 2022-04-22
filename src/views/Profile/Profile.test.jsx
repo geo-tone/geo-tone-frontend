@@ -1,8 +1,8 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 import { mockUser, mockProfile } from '../../mocks/resolvers';
 import { UserProvider } from '../../context/UserContext';
 import Profile from './Profile';
