@@ -1,4 +1,5 @@
 import styles from './Channel.css';
+import { motion } from 'framer-motion';
 
 export default function Controls({
   channelId,
@@ -40,7 +41,8 @@ export default function Controls({
           value={fx.reverb}
         />
       </label>
-      <label>
+
+      {/* <label>
         Bit Crusher
         <input
           id={`channel-${channelId}-bitcrusher`}
@@ -65,7 +67,7 @@ export default function Controls({
           onChange={(e) => setDelay(e.target.value)}
           value={delay}
         />
-      </label>
+      </label> */}
     </div>
   );
 }
