@@ -23,6 +23,7 @@ export default function App() {
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/about" element={<About />} />
+              <Route exact path="/explore" element={<Explore />} />
               <Route exact path="/signin" element={<SignIn />} />
               <Route exact path="/register" element={<Register />} />
               <Route
@@ -63,7 +64,6 @@ export default function App() {
                   </ProjectProvider>
                 }
               />
-              <Route exact path="/explore" element={<Explore />} />
             </Routes>
           </Layout>
         </UserProvider>
