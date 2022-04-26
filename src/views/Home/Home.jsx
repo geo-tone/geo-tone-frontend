@@ -11,7 +11,6 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       const userAggregate = await getTotalUsers();
-      console.log('userAggregate', userAggregate);
       setTotalUsers(userAggregate);
       const projectAggregate = await getTotalProjects();
       setTotalProjects(projectAggregate);

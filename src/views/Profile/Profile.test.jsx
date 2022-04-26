@@ -13,6 +13,10 @@ import Home from '../Home/Home';
 const user = userEvent.setup();
 
 const server = setupServer(
+  rest.post(`${process.env.API_URL}/api/v1/profiles`, (req, res, ctx) => {
+    return res(ctx.json(mockProfile));
+  }),
+
   rest.get(`${process.env.API_URL}/api/v1/users/me`, (req, res, ctx) => {
     return res(ctx.json(mockUser));
   }),
@@ -24,16 +28,20 @@ const server = setupServer(
     }
   ),
 
-  rest.post(`${process.env.API_URL}/api/v1/profiles`, (req, res, ctx) => {
-    return res(ctx.json(mockProfile));
-  }),
-
   rest.get(
     `${process.env.API_URL}/api/v1/projects/user/:user_id`,
     (req, res, ctx) => {
       return res(ctx.json({ message: 'this user has no projects' }));
     }
   ),
+
+  rest.get(`${process.env.API_URL}/api/v1/users/count`, (req, res, ctx) => {
+    return res(ctx.json(1));
+  }),
+
+  rest.get(`${process.env.API_URL}/api/v1/projects/count`, (req, res, ctx) => {
+    return res(ctx.json(2));
+  }),
 
   rest.patch(
     `${process.env.API_URL}/api/v1/profiles/:username`,
@@ -132,7 +140,7 @@ describe('Profile', () => {
     avatarInput = await screen.findByRole('textbox', { name: /avatar/i });
 
     redirectButton = await screen.findByRole('button', {
-      name: /edit/i,
+      name: /save/i,
     });
 
     await user.type(bioInput, 'edited bio');
@@ -157,8 +165,8 @@ describe('Profile', () => {
 
     // Expected Profile page after edits
     await screen.findByRole('heading', { name: /mockuser/i });
-    await screen.findByText('edited bio');
-    await screen.findByAltText('user avatar');
+    await screen.findByText(/edited bio/i);
+    await screen.findByAltText(/mockuser's avatar/i);
     expect(await screen.findAllByRole('button')).toHaveLength(3);
   });
 
