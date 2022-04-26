@@ -1,30 +1,43 @@
-import React from 'react';
+import { motion, useCycle } from 'framer-motion';
 import { useProject } from '../../context/ProjectContext';
+import { playVariants as play } from '../../utils/framerUtils';
+import styles from './GlobalControls.css';
 
-export default function GlobalControls({ start, setStart }) {
+export default function GlobalControls({ start, setStart, volume, setVolume }) {
   const {
     project: { project },
-    handleProjectVolume,
     handleSongBPM,
   } = useProject();
 
+  const [active, cycleActive] = useCycle('play', 'stop');
+
   return (
-    <div id="global-controls">
-      <button onClick={() => setStart(!start)}>
+    <div id="global-controls" className={styles.container}>
+      <motion.button
+        className={styles.playButton}
+        whileHover={{ scale: 1.1 }}
+        onClick={() => {
+          cycleActive();
+          setStart(!start);
+        }}
+        animate={active}
+        variants={play}
+      >
         {start ? 'stop' : 'play'}
-      </button>
-      <label>
+      </motion.button>
+      <label className={styles.label}>
         Project Volume
         <input
           type="range"
           min="-48"
           max="0"
-          value={project.volume}
-          onChange={(e) => handleProjectVolume(e)}
+          step="1"
+          value={volume}
+          onChange={(e) => setVolume(Number(e.target.value))}
         />
       </label>
 
-      <label>
+      <label className={styles.label}>
         BPM
         <input
           type="number"
@@ -33,6 +46,7 @@ export default function GlobalControls({ start, setStart }) {
           step="10"
           value={project.bpm}
           onChange={handleSongBPM}
+          className={styles.bpmCounter}
         />
       </label>
     </div>

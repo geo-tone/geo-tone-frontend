@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;800&family=Major+Mono+Display&display=swap');
+
+.container {
+  display: flex;
+  font-family: 'Major Mono Display';
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.playButton {
+  font-family: 'Major Mono Display';
+  width: 90px;
+  height: 90px;
+  font-size: 120%;
+}
+
+.label {
+  font-size: 150%;
+}
+
+.bpmCounter {
+  border-radius: 10px;
+
+  align-self: center;
+  font-family: 'Major Mono Display';
+  width: 120px;
+  height: 60px;
+  background-color: var(--black-ish);
+  color: var(--white-ish);
+  font-size: 120%;
+}
