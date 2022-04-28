@@ -17,8 +17,6 @@ export default function Explore() {
     fetchdata();
   }, []);
 
-  console.log('AllProjects', allProjects);
-
   const handleExploreProject = (id) => {
     navigate(`/project/${id}`, { push: true });
   };
