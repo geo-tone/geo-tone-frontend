@@ -35,6 +35,7 @@ export default function Explore() {
             key={`project.title${index}`}
             onClick={() => handleExploreProject(project.projectId)}
           >
+            <img className={styles.thumbnail} src={project.avatar} />
             <p aria-label="project title">{project.title}</p>
           </div>
         ))}
