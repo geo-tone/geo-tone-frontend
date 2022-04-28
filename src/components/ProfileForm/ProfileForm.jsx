@@ -3,6 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import { useUser } from '../../context/UserContext';
 import { createProfile, updateProfile } from '../../services/profiles';
 import styles from './ProfileForm.css';
+import { isImage, defaultImage } from '../../utils/imgUtils';
 
 export default function ProfileForm({ isEditing = false }) {
   const { formState, formMessage, handleFormChange, setFormMessage } = useForm({
@@ -14,6 +15,10 @@ export default function ProfileForm({ isEditing = false }) {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isImage(formState.avatar)) {
+      formState.avatar = defaultImage;
+    }
 
     // If the user is editing an existing profile:
     if (isEditing) {
